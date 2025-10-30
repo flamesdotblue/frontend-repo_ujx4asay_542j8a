@@ -1,28 +1,75 @@
-import { useState } from 'react'
+import React, { useState } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import Navbar from './components/Navbar';
+import Hero from './components/Hero';
+import PostsGrid from './components/PostsGrid';
+import Footer from './components/Footer';
 
-function App() {
-  const [count, setCount] = useState(0)
+export default function App() {
+  const [page, setPage] = useState('home');
+  const shouldReduceMotion = useReducedMotion();
+
+  const variants = {
+    initial: shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: 10 },
+    animate: shouldReduceMotion ? { opacity: 1 } : { opacity: 1, y: 0 },
+    exit: shouldReduceMotion ? { opacity: 1 } : { opacity: 0, y: -10 },
+  };
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
-        </div>
-      </div>
-    </div>
-  )
-}
+    <div className="min-h-screen bg-black text-white">
+      <Navbar current={page} onNavigate={setPage} />
 
-export default App
+      <AnimatePresence mode="wait">
+        {page === 'home' && (
+          <motion.main
+            key="home"
+            initial={variants.initial}
+            animate={variants.animate}
+            exit={variants.exit}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
+          >
+            <Hero onPrimaryCta={() => setPage('blog')} />
+            <PostsGrid />
+          </motion.main>
+        )}
+
+        {page === 'blog' && (
+          <motion.main
+            key="blog"
+            initial={variants.initial}
+            animate={variants.animate}
+            exit={variants.exit}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
+            className="bg-black"
+          >
+            <section className="max-w-6xl mx-auto px-4 md:px-6 py-14">
+              <h1 className="text-3xl md:text-4xl font-bold tracking-tight">All Articles</h1>
+              <p className="mt-2 text-zinc-300 max-w-2xl">Deep dives and quick reads across design, engineering, and motion. All animations respect your system accessibility settings.</p>
+            </section>
+            <PostsGrid />
+          </motion.main>
+        )}
+
+        {page === 'about' && (
+          <motion.main
+            key="about"
+            initial={variants.initial}
+            animate={variants.animate}
+            exit={variants.exit}
+            transition={{ duration: 0.35, ease: 'easeOut' }}
+            className="bg-black"
+          >
+            <section className="max-w-6xl mx-auto px-4 md:px-6 py-14">
+              <h1 className="text-3xl md:text-4xl font-bold tracking-tight">About this blog</h1>
+              <p className="mt-4 text-zinc-300 max-w-3xl">
+                Built as a modern, accessible showcase. The homepage features a reactive 3D particle background. Page transitions and interactive tiles are powered by motion and respect prefers-reduced-motion.
+              </p>
+            </section>
+          </motion.main>
+        )}
+      </AnimatePresence>
+
+      <Footer />
+    </div>
+  );
+}
