@@ -1,45 +1,48 @@
-import React from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { Rocket, Home, Sparkles, Layers } from 'lucide-react';
 
-export default function Navbar({ current, onNavigate }) {
-  const links = [
-    { key: 'home', label: 'Home' },
-    { key: 'blog', label: 'Blog' },
-    { key: 'about', label: 'About' },
+export default function Navbar() {
+  const [active, setActive] = useState('home');
+
+  const items = [
+    { key: 'home', label: 'Home', icon: Home },
+    { key: 'showcase', label: 'Showcase', icon: Layers },
+    { key: 'features', label: 'Features', icon: Sparkles },
   ];
 
   return (
-    <header className="sticky top-0 z-50 backdrop-blur supports-[backdrop-filter]:bg-black/40 bg-black/60 border-b border-white/10">
-      <nav className="max-w-6xl mx-auto px-4 md:px-6 py-3 flex items-center justify-between">
-        <div className="flex items-center gap-2 text-white">
-          <span className="inline-flex items-center justify-center w-8 h-8 rounded bg-gradient-to-tr from-sky-500 via-cyan-400 to-fuchsia-500" />
-          <span className="font-semibold tracking-tight">Nebula Blog</span>
-        </div>
-        <ul className="flex items-center gap-1 text-sm">
-          {links.map((link) => {
-            const active = current === link.key;
-            return (
-              <li key={link.key}>
+    <div className="sticky top-0 z-50 w-full backdrop-blur supports-[backdrop-filter]:bg-black/40 bg-black/60 border-b border-white/10">
+      <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+        <div className="flex h-16 items-center justify-between">
+          <div className="flex items-center gap-3">
+            <Rocket className="h-6 w-6 text-indigo-400" />
+            <span className="font-semibold tracking-tight text-white">Vibe Blog</span>
+          </div>
+          <ul className="relative hidden md:flex items-center gap-1 rounded-full bg-white/5 p-1 ring-1 ring-white/10">
+            {items.map(({ key, label, icon: Icon }) => (
+              <li key={key}>
                 <button
-                  onClick={() => onNavigate(link.key)}
-                  className={`relative px-3 py-2 rounded-md transition-colors ${
-                    active ? 'text-white' : 'text-zinc-300 hover:text-white'
+                  onClick={() => setActive(key)}
+                  className={`group relative inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm transition-colors ${
+                    active === key ? 'text-white' : 'text-zinc-400 hover:text-white'
                   }`}
                 >
-                  {active && (
+                  {active === key && (
                     <motion.span
                       layoutId="nav-pill"
-                      className="absolute inset-0 rounded-md bg-white/10"
-                      transition={{ type: 'spring', stiffness: 400, damping: 30 }}
+                      className="absolute inset-0 rounded-full bg-indigo-500/20"
+                      transition={{ type: 'spring', stiffness: 500, damping: 35 }}
                     />
                   )}
-                  <span className="relative z-10">{link.label}</span>
+                  <Icon className="h-4 w-4" />
+                  <span className="relative">{label}</span>
                 </button>
               </li>
-            );
-          })}
-        </ul>
+            ))}
+          </ul>
+        </div>
       </nav>
-    </header>
+    </div>
   );
 }

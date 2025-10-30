@@ -1,14 +1,14 @@
-import React from 'react';
-
 export default function Footer() {
   return (
-    <footer className="bg-black border-t border-white/10">
-      <div className="max-w-6xl mx-auto px-4 md:px-6 py-8 flex flex-col md:flex-row items-center justify-between gap-4 text-sm text-zinc-400">
-        <p>© {new Date().getFullYear()} Nebula Blog. All rights reserved.</p>
-        <div className="flex items-center gap-4">
-          <a href="#" className="hover:text-white">Twitter</a>
-          <a href="#" className="hover:text-white">GitHub</a>
-          <a href="#" className="hover:text-white">Contact</a>
+    <footer className="w-full border-t border-white/10 bg-black py-10">
+      <div className="mx-auto max-w-7xl px-6">
+        <div className="flex flex-col items-center justify-between gap-4 text-center sm:flex-row sm:text-left">
+          <p className="text-sm text-zinc-400">© {new Date().getFullYear()} Vibe Blog. Crafted with care, motion, and accessibility.</p>
+          <div className="flex items-center gap-4 text-sm">
+            <a href="#" className="text-zinc-400 hover:text-white">Privacy</a>
+            <a href="#" className="text-zinc-400 hover:text-white">Terms</a>
+            <a href="#" className="text-zinc-400 hover:text-white">Contact</a>
+          </div>
         </div>
       </div>
     </footer>
